@@ -9,7 +9,7 @@
 //  ⚠️  Este archivo es el ÚNICO que necesitas modificar.
 // ============================================================
 
-export const APP_PASSWORD = "SAS-Marbella-2024";
+export const APP_PASSWORD = "molinero26";
 
 // Tiempo de sesión en horas (por defecto 8h, jornada laboral)
 export const SESSION_HOURS = 8;
