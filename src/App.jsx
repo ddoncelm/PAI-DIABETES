@@ -574,6 +574,67 @@ function ToggleBtn({ valor, opA, labelA, opB, labelB, onChange, color="#3b82f6" 
   );
 }
 
+// ─── MFG/MCG DATA (Resolución SAS 2018+2022, BOJA) ───────────────────────────
+const MFG_DATA = {
+  mfg_dm1: {
+    titulo: "Sistema Flash (MFG) — DMT1",
+    color: "#0891b2",
+    indicaciones: [
+      "DMT1 con edad ≥ 4 años (pediátrico hasta 17 años, mantenido de forma indefinida al superar los 18 años)",
+      "Control glucémico no óptimo: HbA1c persistente > 8%",
+      "Hipoglucemias graves de repetición: > 2 episodios en los últimos 2 años",
+      "Hipoglucemias no graves de repetición: > 4 episodios leves/semana o >10% del tiempo",
+      "Hipoglucemias inadvertidas confirmadas",
+      "Mujeres con control metabólico no óptimo antes o durante la gestación (HbA1c > 6,5%)",
+    ],
+    requisitos: [
+      "Supervisión por cuidador mayor de 18 años si el paciente es menor o no tiene autonomía",
+      "Nivel adecuado de educación diabetológica (paciente o cuidadores)",
+      "Buena adherencia a las recomendaciones del equipo sanitario",
+      "Cumplimiento de visitas de seguimiento programadas",
+      "Situación clínica estable a criterio del equipo sanitario",
+    ],
+    notas: "Resolución SAS 17/04/2018 (BOJA nº78). Los datos del sensor se integran en la Historia Clínica Digital del SSPA (LibreView → HSAP/Diraya).",
+  },
+  mfg_dm2: {
+    titulo: "Sistema Flash (MFG) — DMT2",
+    color: "#059669",
+    indicaciones: [
+      "DMT2 con pauta intensiva de insulina: régimen bolo-basal (insulina lenta o análogo lento + rápida)",
+      "Necesidad de realizar 6 o más autocontroles de glucemia capilar al día",
+      "Discapacidad funcional o dependencia que dificulte los autocontroles capilares",
+      "Hipoglucemias frecuentes no graves de repetición",
+      "Formas de diabetes insulinopénicas distintas a DMT1 (desde enero 2021)",
+    ],
+    requisitos: [
+      "Supervisión por cuidador mayor de 18 años si el paciente es menor o no tiene autonomía",
+      "Nivel adecuado de educación diabetológica",
+      "Buena adherencia a las recomendaciones del equipo sanitario",
+      "Programa educativo estructurado en la primera implantación del sensor",
+    ],
+    notas: "Resolución SAS 01/04/2022 (BOJA nº75). Implantación en todos los Centros de Salud de AP del SSPA. Financiado por el SAS — FreeStyle Libre® (Abbott). Sensor en parte posterior del brazo, reemplazable cada 14 días.",
+  },
+  mcg: {
+    titulo: "Monitorización Continua (MCG) — Sistema integrado con bomba ISCI",
+    color: "#7c3aed",
+    indicaciones: [
+      "Portadores de ISCI (bomba de insulina) con control glucémico no óptimo (HbA1c > 8% persistente)",
+      "Hipoglucemias graves de repetición (> 2 episodios en 2 últimos años) pese a terapia ISCI",
+      "Hipoglucemias no graves de repetición (> 4 leves/semana o > 10% del tiempo) pese a terapia ISCI",
+      "Hipoglucemias inadvertidas confirmadas (test de Clarke ≥ 4 en adultos)",
+      "Mujeres con HbA1c > 6,5% antes o durante la gestación pese a ISCI",
+    ],
+    requisitos: [
+      "Centro autorizado para terapia ISCI en el SSPA",
+      "Equipo especializado en endocrinología o pediatría con experiencia en diabetes",
+      "Programa educativo estructurado específico para sistema integrado",
+      "Uso del sensor al menos el 70% del tiempo",
+      "La terapia sólo se mantiene si se objetiva efectividad",
+    ],
+    notas: "El sistema MCG incorpora la función de suspensión automática por hipoglucemia. Los centros autorizados para MCG son UGCs de Endocrinología y Pediatría de hospitales del SSPA designados. Centros en Málaga: Hospital Virgen de la Victoria y Hospital Regional de Málaga.",
+  },
+};
+
 // ─── MÓDULO INSULINAS ─────────────────────────────────────────────────────────
 function ModuloInsulinas() {
   const [tab, setTab] = useState("tipos");
@@ -587,7 +648,7 @@ function ModuloInsulinas() {
   const dc = Math.round((glucemia-objetivo)/fs);
   const ratio = (450/dosis).toFixed(1);
   const insulComida = Math.round(raciones/Number(ratio));
-  const subtabs = [{ id:"tipos",label:"Tipos" },{ id:"correctora",label:"Dosis correctora" },{ id:"ratio",label:"Ratio IC" },{ id:"ajuste",label:"Ajustes" }];
+  const subtabs = [{ id:"tipos",label:"Tipos" },{ id:"correctora",label:"Dosis correctora" },{ id:"ratio",label:"Ratio IC" },{ id:"mfg",label:"MFG / MCG" },{ id:"ajuste",label:"Ajustes" }];
   return (
     <div>
       <div style={{ background:"linear-gradient(135deg,#ecfeff,#cffafe)", border:"1.5px solid #a5f3fc", borderRadius:12, padding:"12px 14px", marginBottom:14 }}>
@@ -704,8 +765,79 @@ function ModuloInsulinas() {
           </div>
           <div style={{ background:"#fff7ed", border:"1px solid #fed7aa", borderRadius:10, padding:12 }}>
             <div style={{ fontSize:12, fontWeight:700, color:"#9a3412", marginBottom:6 }}>📌 Recordatorio clínico</div>
-            {["El ratio IC es orientativo: ajustar individualmente según glucemias postprandiales","Para DMT2 iniciando insulina: comenzar con ratio conservador y ajustar semanalmente","Añadir dosis correctora si glucemia preprandial fuera de objetivo","En DMT1: contaje de raciones es fundamental (NIC 5614 del PAI)"].map((t,i)=>(
+            {[
+              "El ratio IC es orientativo: ajustar individualmente según glucemias postprandiales",
+              "Regla 450: para análogos de insulina rápida (lispro, aspart, glulisina) — más precisa para la mayoría",
+              "Regla 500: alternativa para insulina regular humana o si ratio 450 resulta demasiado agresivo",
+              "Para DMT2 iniciando insulina: comenzar con ratio conservador y ajustar semanalmente",
+              "Añadir dosis correctora si glucemia preprandial fuera de objetivo",
+              "En DMT1: contaje de raciones es fundamental (NIC 5614 del PAI)",
+            ].map((t,i)=>(
               <div key={i} style={{ fontSize:12, color:"#92400e", display:"flex", gap:6, marginBottom:3 }}><span>▸</span><span>{t}</span></div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {tab==="mfg" && (
+        <div>
+          <div style={{ background:"linear-gradient(135deg,#f0f9ff,#e0f2fe)", border:"1.5px solid #7dd3fc", borderRadius:12, padding:"12px 14px", marginBottom:14 }}>
+            <div style={{ fontSize:14, fontWeight:800, color:"#0f172a" }}>📡 Monitorización Flash (MFG) y Continua (MCG)</div>
+            <div style={{ fontSize:12, color:"#64748b", marginTop:2 }}>Criterios de indicación y requisitos — Cartera de Servicios SSPA</div>
+            <div style={{ fontSize:11, color:"#0369a1", marginTop:4, background:"#e0f2fe", borderRadius:6, padding:"3px 8px", display:"inline-block" }}>
+              Resoluciones SAS 2018 · 2022 · BOJA · Ampliado a todos los Centros de Salud de AP
+            </div>
+          </div>
+
+          {Object.values(MFG_DATA).map((sec, si) => {
+            const k = `mfg-${si}`, open = exp[k];
+            return (
+              <div key={si} style={{ background:"white", border:`1.5px solid ${sec.color}30`, borderRadius:12, marginBottom:12, overflow:"hidden" }}>
+                <button onClick={()=>toggle(k)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 14px", background:`${sec.color}10`, border:"none", cursor:"pointer", textAlign:"left" }}>
+                  <span style={{ fontSize:13, fontWeight:700, color:sec.color }}>{sec.titulo}</span>
+                  <span style={{ fontSize:16, color:"#94a3b8", transform:open?"rotate(180deg)":"none", transition:"transform 0.2s" }}>▾</span>
+                </button>
+                {open && (
+                  <div style={{ padding:"12px 14px 14px" }}>
+                    <div style={{ marginBottom:10 }}>
+                      <div style={{ fontSize:11, fontWeight:700, color:sec.color, textTransform:"uppercase", letterSpacing:"0.5px", marginBottom:6 }}>✅ Indicaciones</div>
+                      {sec.indicaciones.map((it,j)=>(
+                        <div key={j} style={{ display:"flex", gap:8, padding:"4px 0", borderTop:j>0?"1px solid #f1f5f9":"none" }}>
+                          <span style={{ color:sec.color, fontSize:12, marginTop:3, flexShrink:0 }}>▸</span>
+                          <span style={{ fontSize:13, color:"#374151", lineHeight:1.5 }}>{it}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ marginBottom:10, padding:"10px 12px", background:"#fffbeb", borderRadius:10, border:"1px solid #fde68a" }}>
+                      <div style={{ fontSize:11, fontWeight:700, color:"#92400e", textTransform:"uppercase", letterSpacing:"0.5px", marginBottom:6 }}>⚠️ Requisitos indispensables</div>
+                      {sec.requisitos.map((it,j)=>(
+                        <div key={j} style={{ display:"flex", gap:8, padding:"3px 0" }}>
+                          <span style={{ color:"#d97706", fontSize:12, marginTop:3, flexShrink:0 }}>▸</span>
+                          <span style={{ fontSize:12, color:"#92400e", lineHeight:1.5 }}>{it}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ fontSize:11, color:"#64748b", background:"#f8fafc", borderRadius:8, padding:"8px 10px", border:"1px solid #e2e8f0", lineHeight:1.6 }}>
+                      📋 {sec.notas}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          <div style={{ background:"#f0fdf4", border:"1px solid #86efac", borderRadius:10, padding:12, marginTop:4 }}>
+            <div style={{ fontSize:12, fontWeight:700, color:"#166534", marginBottom:6 }}>💡 Integración en Historia Clínica Digital (HSAP/Diraya)</div>
+            {[
+              "El SAS es pionero en España en integrar los datos de MFG en la Historia Clínica Digital",
+              "Los pacientes autorizados pueden vincular su sensor FreeStyle Libre® con el sistema 'Freestyle' del SAS",
+              "Los profesionales sanitarios acceden a las mediciones desde cualquier ámbito asistencial (AP y AH)",
+              "Aplicación FreeStyle LibreView: plataforma para análisis de datos de glucosa por profesional y paciente",
+              "FreeStyle LibreLinkUp: seguimiento remoto por cuidadores (útil en edad pediátrica)",
+            ].map((it,i)=>(
+              <div key={i} style={{ fontSize:12, color:"#166534", display:"flex", gap:6, marginBottom:3 }}>
+                <span>▸</span><span>{it}</span>
+              </div>
             ))}
           </div>
         </div>
@@ -753,8 +885,8 @@ function ModuloADO() {
         <div style={{ fontSize:12, color:"#64748b", marginTop:2 }}>Tabla por familias, dosis, perfil clínico e interacciones</div>
       </div>
       <div style={{ display:"flex", gap:6, marginBottom:14 }}>
-        {[{ id:"familias",label:"Familias y dosis" },{ id:"interacciones",label:"Interacciones y CI" }].map(t=>(
-          <button key={t.id} onClick={()=>setTab(t.id)} style={{ padding:"7px 14px", borderRadius:8, fontSize:12, fontWeight:600, border:`1.5px solid ${tab===t.id?"#7c3aed":"#e2e8f0"}`, background:tab===t.id?"#faf5ff":"#f8fafc", color:tab===t.id?"#7c3aed":"#6b7280", cursor:"pointer" }}>{t.label}</button>
+        {[{ id:"familias",label:"Familias y dosis" },{ id:"interacciones",label:"Interacciones y CI" },{ id:"novedades",label:"🆕 Novedades" }].map(t=>(
+          <button key={t.id} onClick={()=>setTab(t.id)} style={{ padding:"7px 14px", borderRadius:8, fontSize:12, fontWeight:600, border:`1.5px solid ${tab===t.id?"#7c3aed":"#e2e8f0"}`, background:tab===t.id?"#faf5ff":"#f8fafc", color:tab===t.id?"#7c3aed":"#6b7280", cursor:"pointer", whiteSpace:"nowrap" }}>{t.label}</button>
         ))}
       </div>
       <div style={{ background:"white", border:"1.5px solid #e5e7eb", borderRadius:10, padding:"10px 14px", marginBottom:14 }}>
@@ -842,6 +974,98 @@ function ModuloADO() {
           <div style={{ background:"#f8fafc", border:"1px solid #e2e8f0", borderRadius:10, padding:10 }}>
             <div style={{ fontSize:11, color:"#64748b", lineHeight:1.6 }}>
               <strong>Nota:</strong> Referencia de apoyo clínico basada en PAI Diabetes 2018 (Consejería de Salud, Junta de Andalucía) y fichas técnicas vigentes. No sustituye la ficha técnica completa ni el juicio clínico.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {tab==="novedades" && (
+        <div>
+          <div style={{ background:"linear-gradient(135deg,#fdf4ff,#f5f3ff)", border:"1.5px solid #e9d5ff", borderRadius:12, padding:"12px 14px", marginBottom:14 }}>
+            <div style={{ fontSize:14, fontWeight:800, color:"#0f172a" }}>🆕 Novedades farmacológicas desde el PAI 2018</div>
+            <div style={{ fontSize:12, color:"#64748b", marginTop:2 }}>Fármacos con evidencia relevante no recogidos en el PAI 2018 · Referencia: Guías ADA 2024, ESC 2023</div>
+            <div style={{ fontSize:11, color:"#dc2626", background:"#fff5f5", borderRadius:6, padding:"4px 8px", marginTop:6, border:"1px solid #fecaca", display:"inline-block" }}>
+              ⚠️ Contenido informativo. Consultar ficha técnica y posicionamiento terapéutico del SAS antes de prescribir
+            </div>
+          </div>
+
+          {[
+            {
+              nombre: "Semaglutida oral (Rybelsus®)", familia: "aRGLP-1 oral", color: "#059669",
+              hba1c: "↓ 1,0–1,4%", peso: "↓↓ Moderada-alta", hipoglucemia: "No",
+              novedad: "Primer aRGLP-1 en comprimido oral. Administrar en ayunas con máx. 120 ml de agua, esperar 30 min antes de comer.",
+              dosis: "3 mg/día (4 sem) → 7 mg/día → máx 14 mg/día",
+              cv: "✅ No inferioridad CV (PIONEER-6). Beneficio renal emergente.",
+              precauciones: "Absorción variable. No intercambiable con semaglutida SC (Ozempic®). Mismas contraindicaciones que aRGLP-1 SC.",
+              renal: "Sin ajuste renal necesario",
+            },
+            {
+              nombre: "Tirzepatida (Mounjaro®)", familia: "GIP/GLP-1 dual agonista", color: "#7c3aed",
+              hba1c: "↓ 1,8–2,4%", peso: "↓↓↓↓ Muy significativa (hasta -22%)", hipoglucemia: "No",
+              novedad: "Primer agonista dual GIP+GLP-1. Mayor reducción de HbA1c y peso que cualquier otro ADO. Aprobado en España 2023.",
+              dosis: "2,5 mg/sem SC (4 sem) → 5 mg/sem → hasta 15 mg/sem",
+              cv: "✅ Superioridad CV en pacientes con DM2 y EVA (SURPASS-CVOT). ✅ Reducción marcada de insuficiencia cardíaca.",
+              precauciones: "SC semanal. Mismas contraindicaciones que aRGLP-1. Náuseas/vómitos frecuentes al inicio. Precio elevado — valorar disponibilidad en SAS.",
+              renal: "Sin ajuste renal",
+            },
+            {
+              nombre: "Finerenona (Kerendia®)", familia: "Antagonista selectivo receptor mineralocorticoide (MRA no esteroideo)", color: "#0369a1",
+              hba1c: "No hipoglucemiante directo", peso: "Neutro", hipoglucemia: "No",
+              novedad: "Indicación específica: DMT2 + ERC (estadios G3-G4 con albuminuria). Reduce progresión renal y eventos CV. Complementario a IECA/ARA II.",
+              dosis: "10 mg/día (inicio si FG 25–60) → 20 mg/día si FG ≥60 y potasio ≤4,8 mEq/L",
+              cv: "✅ Reducción hospitalización por IC y mortalidad CV (FIGARO-DKD, FIDELIO-DKD)",
+              precauciones: "⚠️ Riesgo hiperpotasemia — monitorizar K+. Contraindicada con K+ >5 mEq/L. No combinar con inhibidores CYP3A4 potentes.",
+              renal: "Indicación específica en ERC G3-G4. Contraindicada si FG <25 ml/min.",
+            },
+            {
+              nombre: "Empagliflozina / Dapagliflozina en IC y ERC", familia: "iSGLT2 — indicaciones ampliadas", color: "#0891b2",
+              hba1c: "↓ 0,7–1% (efecto glucémico)", peso: "↓ Moderada", hipoglucemia: "No",
+              novedad: "Desde 2021–2023 las indicaciones de iSGLT2 se han ampliado a: IC con fracción de eyección reducida y preservada (independientemente de DM) y ERC crónica (DAPA-CKD, EMPEROR-Reduced/Preserved).",
+              dosis: "Empagliflozina 10 mg/día · Dapagliflozina 10 mg/día",
+              cv: "✅ Superioridad en IC y ERC más allá del efecto glucémico. Nueva indicación aprobada por EMA.",
+              precauciones: "Mismas precauciones que iSGLT2 clásicas. La indicación en IC/ERC no requiere DM concomitante.",
+              renal: "Dapagliflozina aprobada en ERC desde FG ≥25 ml/min (indicación renal)",
+            },
+          ].map((f, i) => {
+            const k = `nov-${i}`, open = exp[k];
+            return (
+              <div key={i} style={{ background:"white", border:`1.5px solid ${f.color}30`, borderRadius:12, marginBottom:10, overflow:"hidden" }}>
+                <button onClick={()=>toggle(k)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 12px", background:`${f.color}08`, border:"none", cursor:"pointer", textAlign:"left" }}>
+                  <div>
+                    <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+                      <span style={{ fontSize:10, fontWeight:700, background:`${f.color}18`, color:f.color, border:`1px solid ${f.color}40`, borderRadius:5, padding:"1px 6px" }}>🆕 {f.familia}</span>
+                    </div>
+                    <div style={{ fontSize:13, fontWeight:700, color:"#1e293b", marginTop:3 }}>{f.nombre}</div>
+                    <div style={{ fontSize:11, color:"#64748b", marginTop:1 }}>HbA1c {f.hba1c} · Hipoglucemia: {f.hipoglucemia} · Peso: {f.peso}</div>
+                  </div>
+                  <span style={{ fontSize:15, color:"#94a3b8", transform:open?"rotate(180deg)":"none", transition:"transform 0.2s", flexShrink:0, marginLeft:8 }}>▾</span>
+                </button>
+                {open && (
+                  <div style={{ padding:"0 12px 12px", borderTop:"1px solid #f1f5f9" }}>
+                    <div style={{ fontSize:12, color:"#374151", lineHeight:1.7, marginTop:10 }}>
+                      <div style={{ marginBottom:8, padding:"8px 10px", background:`${f.color}10`, borderRadius:8, border:`1px solid ${f.color}30` }}>
+                        <strong>✨ Novedad:</strong> {f.novedad}
+                      </div>
+                      <div style={{ marginBottom:5 }}><strong>💊 Dosis:</strong> {f.dosis}</div>
+                      <div style={{ marginBottom:6, padding:"6px 8px", background:f.cv.includes("✅")?"#f0fdf4":"#f8fafc", borderRadius:8 }}>
+                        <strong>❤️ CV / Renal:</strong> {f.cv}
+                      </div>
+                      <div style={{ padding:"8px 10px", borderRadius:8, background:f.precauciones.includes("⚠️")?"#fffbeb":"#f8fafc", border:`1px solid ${f.precauciones.includes("⚠️")?"#fde68a":"#e2e8f0"}`, marginBottom:6 }}>
+                        <strong>⚠️ Precauciones:</strong> {f.precauciones}
+                      </div>
+                      <div style={{ padding:"6px 8px", borderRadius:8, background:"#ecfeff", border:"1px solid #a5f3fc" }}>
+                        <strong>🩺 Ajuste renal:</strong> {f.renal}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          <div style={{ background:"#f8fafc", border:"1px solid #e2e8f0", borderRadius:10, padding:10, marginTop:4 }}>
+            <div style={{ fontSize:11, color:"#64748b", lineHeight:1.6 }}>
+              <strong>Referencias:</strong> ADA Standards of Care 2024 · ESC Guidelines Cardiovascular Disease in Diabetes 2023 · Guía Farmacoterapéutica SSPA · Fichas técnicas EMA. El PAI Diabetes del SSPA (3ª ed. 2018) no recoge estos fármacos por fecha de publicación. Para posicionamiento terapéutico oficial del SAS consultar AEMPS e IPT vigentes.
             </div>
           </div>
         </div>
