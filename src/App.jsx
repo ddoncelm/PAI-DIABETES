@@ -1243,9 +1243,9 @@ function ModuloPAI({ momento, perfil }) {
                       style={{ fontSize:11, fontWeight:600, color:f.color, background:"white", border:`1px solid ${f.border}`, borderRadius:7, padding:"5px 12px", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:4 }}>
                       ▶ Ver demo en video
                     </a>
-                    <a href={f.pdf} target="_blank" rel="noopener noreferrer"
+                    <a href={f.pdf} download
                       style={{ fontSize:11, fontWeight:600, color:"#475569", background:"white", border:"1px solid #e2e8f0", borderRadius:7, padding:"5px 12px", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:4 }}>
-                      📋 Ver formulario
+                      📋 Descargar formulario
                     </a>
                   </div>
                 </div>
