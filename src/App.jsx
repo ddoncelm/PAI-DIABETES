@@ -1196,6 +1196,60 @@ function ModuloPAI({ momento, perfil }) {
           })}
         </div>
       </div>
+
+      {/* ── FORMULARIOS DIRAYA — solo en Complicaciones ── */}
+      {momento==="complicaciones" && (
+        <div style={{ marginTop:16 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10, padding:"8px 12px", background:"linear-gradient(135deg,#f0f9ff,#e0f2fe)", borderRadius:10, border:"1px solid #7dd3fc" }}>
+            <span style={{ fontSize:16 }}>📋</span>
+            <div>
+              <div style={{ fontSize:13, fontWeight:700, color:"#0369a1" }}>Formularios Diraya — Pie Diabético</div>
+              <div style={{ fontSize:11, color:"#64748b" }}>HSAP · Estación Clínica · Publicados enero 2024</div>
+            </div>
+          </div>
+          {[
+            {
+              num:"1", color:"#0891b2", bg:"#ecfeff", border:"#a5f3fc",
+              titulo:"Exploración y estratificación del pie de riesgo",
+              desc:"Valora antecedentes, neuropatía, EAP, hábitos y exploración física. Clasifica el riesgo (bajo/moderado/alto) y establece frecuencia de cribado.",
+              video:"https://cdnapi.codev8.net/vdmplayer/c63df16c-5956-422d-b0ba-b6a175932067",
+            },
+            {
+              num:"2", color:"#059669", bg:"#f0fdf4", border:"#86efac",
+              titulo:"Conocimientos sobre autocuidados del pie: DSFQ-UMA",
+              desc:"Cuestionario validado (Univ. Málaga). Evalúa el nivel de conocimientos del paciente (escala 16–80). Recomienda intervenciones en las áreas deficitarias detectadas.",
+              video:"https://cdnapi.codev8.net/vdmplayer/c474c2b6-f0e7-4583-8e2e-7fa71953aff2",
+            },
+            {
+              num:"3", color:"#7c3aed", bg:"#faf5ff", border:"#c4b5fd",
+              titulo:"Registro de educación terapéutica para la prevención del pie diabético",
+              desc:"Documenta la ET realizada (tipo, objetivos NOC, intervenciones NIC). Vinculado a la Estrategia de Cuidados SSPA y el Plan Integral de Diabetes.",
+              video:"https://cdnapi.codev8.net/vdmplayer/8fef0bd9-c420-4204-a3e9-931cce346f08",
+            },
+          ].map((f,i)=>(
+            <div key={i} style={{ background:f.bg, border:`1.5px solid ${f.border}`, borderRadius:12, padding:"12px 14px", marginBottom:10 }}>
+              <div style={{ display:"flex", alignItems:"flex-start", gap:10 }}>
+                <div style={{ background:f.color, color:"white", borderRadius:8, width:26, height:26, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:800, flexShrink:0 }}>{f.num}</div>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ fontSize:13, fontWeight:700, color:"#0f172a", marginBottom:4 }}>{f.titulo}</div>
+                  <div style={{ fontSize:12, color:"#475569", lineHeight:1.5, marginBottom:10 }}>{f.desc}</div>
+                  <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+                    <a href={f.video} target="_blank" rel="noopener noreferrer" style={{ fontSize:11, fontWeight:600, color:f.color, background:"white", border:`1px solid ${f.border}`, borderRadius:7, padding:"5px 12px", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:4 }}>
+                      ▶ Ver demo en video
+                    </a>
+                    <a href="https://juntadeandalucia.es/sites/default/files/2023-12/Pie_diabetico_doc_apoyo_2023.pdf" target="_blank" rel="noopener noreferrer" style={{ fontSize:11, fontWeight:600, color:"#64748b", background:"white", border:"1px solid #e2e8f0", borderRadius:7, padding:"5px 12px", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:4 }}>
+                      📄 PDF de apoyo 2023
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+          <div style={{ fontSize:11, color:"#94a3b8", textAlign:"center", marginTop:4 }}>
+            Accesibles desde HSAP (lista de formularios) y Estación Clínica (menú Crear dentro del episodio)
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1205,6 +1259,7 @@ export default function App() {
   const [autenticado, setAutenticado] = useState(() => checkSession());
   const [momento,    setMomento]    = useState("prevencion");
   const [perfil,     setPerfil]     = useState("ambos");
+  const [tooltip,    setTooltip]    = useState(false);
 
   if (!autenticado) {
     return <Login onSuccess={() => setAutenticado(true)} />;
@@ -1221,11 +1276,48 @@ export default function App() {
 
       {/* ── HEADER ── */}
       <div style={{ background:"linear-gradient(135deg,#0f172a,#1e293b)", color:"white", padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", boxShadow:"0 2px 8px rgba(0,0,0,0.3)", flexShrink:0 }}>
-        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-          <span style={{ fontSize:20 }}>🩺</span>
+        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+          {/* Logo con tooltip hover + tap mailto */}
+          <div style={{ position:"relative" }}>
+            <a
+              href="mailto:doncel.project@gmail.com"
+              onMouseEnter={()=>setTooltip(true)}
+              onMouseLeave={()=>setTooltip(false)}
+              style={{ display:"block", textDecoration:"none" }}
+              title="doncel.project@gmail.com"
+            >
+              <img
+                src="/assets/icon-192.png"
+                alt="Doncel Project"
+                style={{ width:36, height:36, borderRadius:8, objectFit:"cover", flexShrink:0, display:"block", cursor:"pointer" }}
+              />
+            </a>
+            {tooltip && (
+              <div style={{
+                position:"absolute", top:44, left:0, zIndex:100,
+                background:"#0f172a", color:"white",
+                fontSize:11, fontWeight:600,
+                padding:"6px 10px", borderRadius:8,
+                border:"1px solid #334155",
+                whiteSpace:"nowrap",
+                boxShadow:"0 4px 16px rgba(0,0,0,0.4)",
+                pointerEvents:"none",
+              }}>
+                ✉️ doncel.project@gmail.com
+                <div style={{
+                  position:"absolute", top:-5, left:10,
+                  width:8, height:8, background:"#0f172a",
+                  border:"1px solid #334155", borderRight:"none", borderBottom:"none",
+                  transform:"rotate(45deg)",
+                }}/>
+              </div>
+            )}
+          </div>
           <div>
-            <div style={{ fontSize:14, fontWeight:800 }}>PAI Diabetes Mellitus</div>
-            <div style={{ fontSize:10, color:"#94a3b8" }}>Consejería de Salud · SSPA 2018</div>
+            <div style={{ fontSize:14, fontWeight:800, letterSpacing:"-0.3px" }}>
+              <span style={{ color:"white" }}>doncel</span><span style={{ color:"#38bdf8" }}>project</span>
+            </div>
+            <div style={{ fontSize:10, color:"#94a3b8" }}>PAI Diabetes Mellitus · SSPA 2018</div>
           </div>
         </div>
         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
