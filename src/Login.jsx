@@ -58,15 +58,16 @@ export default function Login({ onSuccess }) {
     }}>
       {/* Logo / Título */}
       <div style={{ textAlign: "center", marginBottom: 32 }}>
-        <div style={{ fontSize: 52, marginBottom: 12 }}>🩺</div>
-        <div style={{
-          fontSize: 22, fontWeight: 900, color: "white",
-          letterSpacing: "-0.5px", marginBottom: 4,
-        }}>
-          PAI Diabetes Mellitus
+        <img
+          src="/assets/icon-192.png"
+          alt="Doncel Project"
+          style={{ width:72, height:72, borderRadius:16, objectFit:"cover", marginBottom:14, boxShadow:"0 8px 24px rgba(0,120,255,0.4)" }}
+        />
+        <div style={{ fontSize:22, fontWeight:900, color:"white", letterSpacing:"-0.5px", marginBottom:4 }}>
+          <span style={{ color:"white" }}>doncel</span><span style={{ color:"#38bdf8" }}>project</span>
         </div>
-        <div style={{ fontSize: 13, color: "#94a3b8" }}>
-          Consejería de Salud · Servicio Andaluz de Salud
+        <div style={{ fontSize:13, color:"#94a3b8" }}>
+          PAI Diabetes Mellitus · Servicio Andaluz de Salud
         </div>
         <div style={{
           display: "inline-block", marginTop: 10,
