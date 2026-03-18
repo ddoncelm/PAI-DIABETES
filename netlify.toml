@@ -2,6 +2,14 @@
   command   = "npm run build"
   publish   = "dist"
 
+# Los PDFs se sirven directamente — esta regla debe ir ANTES del catch-all SPA
+[[redirects]]
+  from   = "/formularios/*"
+  to     = "/formularios/:splat"
+  status = 200
+  force  = false
+
+# Catch-all SPA — redirige todo lo demás a index.html
 [[redirects]]
   from   = "/*"
   to     = "/index.html"
