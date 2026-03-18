@@ -1200,32 +1200,37 @@ function ModuloPAI({ momento, perfil }) {
       {/* ── FORMULARIOS DIRAYA — solo en Complicaciones ── */}
       {momento==="complicaciones" && (
         <div style={{ marginTop:16 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10, padding:"8px 12px", background:"linear-gradient(135deg,#f0f9ff,#e0f2fe)", borderRadius:10, border:"1px solid #7dd3fc" }}>
-            <span style={{ fontSize:16 }}>📋</span>
-            <div>
-              <div style={{ fontSize:13, fontWeight:700, color:"#0369a1" }}>Formularios Diraya — Pie Diabético</div>
-              <div style={{ fontSize:11, color:"#64748b" }}>HSAP · Estación Clínica · Publicados enero 2024</div>
+          {/* Cabecera + PDF de apoyo general */}
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:8, marginBottom:10, padding:"10px 12px", background:"linear-gradient(135deg,#f0f9ff,#e0f2fe)", borderRadius:10, border:"1px solid #7dd3fc" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+              <span style={{ fontSize:16 }}>📋</span>
+              <div>
+                <div style={{ fontSize:13, fontWeight:700, color:"#0369a1" }}>Formularios Diraya — Pie Diabético</div>
+                <div style={{ fontSize:11, color:"#64748b" }}>HSAP · Estación Clínica · DIRAYAbierto 2024</div>
+              </div>
             </div>
+            <a href="https://juntadeandalucia.es/sites/default/files/2023-12/Pie_diabetico_doc_apoyo_2023.pdf" target="_blank" rel="noopener noreferrer"
+              style={{ fontSize:11, fontWeight:600, color:"#0369a1", background:"white", border:"1px solid #bae6fd", borderRadius:7, padding:"5px 12px", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:4 }}>
+              📄 Documento de apoyo Pie Diabético 2023
+            </a>
           </div>
+          {/* Tres formularios con PDF específico */}
           {[
-            {
-              num:"1", color:"#0891b2", bg:"#ecfeff", border:"#a5f3fc",
+            { num:"1", color:"#0891b2", bg:"#ecfeff", border:"#a5f3fc",
               titulo:"Exploración y estratificación del pie de riesgo",
-              desc:"Valora antecedentes, neuropatía, EAP, hábitos y exploración física. Clasifica el riesgo (bajo/moderado/alto) y establece frecuencia de cribado.",
+              desc:"Valora antecedentes, neuropatía (monofilamento + diapasón), EAP (pulsos + ITB), hábitos y exploración física. Clasifica el riesgo (bajo/moderado/alto) y establece la frecuencia de cribado.",
               video:"https://cdnapi.codev8.net/vdmplayer/c63df16c-5956-422d-b0ba-b6a175932067",
-            },
-            {
-              num:"2", color:"#059669", bg:"#f0fdf4", border:"#86efac",
-              titulo:"Conocimientos sobre autocuidados del pie: DSFQ-UMA",
-              desc:"Cuestionario validado (Univ. Málaga). Evalúa el nivel de conocimientos del paciente (escala 16–80). Recomienda intervenciones en las áreas deficitarias detectadas.",
+              pdf:"/formularios/formulario1_pie_riesgo.pdf" },
+            { num:"2", color:"#059669", bg:"#f0fdf4", border:"#86efac",
+              titulo:"Conocimientos sobre autocuidados del pie: DFSQ-UMA",
+              desc:"16 ítems validados (Univ. Málaga). Escala 16–80. Subescalas: autocuidado personal, cuidado podológico, calzado y medias. Recomienda intervenciones en áreas deficitarias.",
               video:"https://cdnapi.codev8.net/vdmplayer/c474c2b6-f0e7-4583-8e2e-7fa71953aff2",
-            },
-            {
-              num:"3", color:"#7c3aed", bg:"#faf5ff", border:"#c4b5fd",
+              pdf:"/formularios/formulario2_dfsq_uma.pdf" },
+            { num:"3", color:"#7c3aed", bg:"#faf5ff", border:"#c4b5fd",
               titulo:"Registro de educación terapéutica para la prevención del pie diabético",
-              desc:"Documenta la ET realizada (tipo, objetivos NOC, intervenciones NIC). Vinculado a la Estrategia de Cuidados SSPA y el Plan Integral de Diabetes.",
+              desc:"Documenta tipo de sesión, contenidos por bloques, objetivos NOC y intervenciones NIC. Vinculado a la Estrategia de Cuidados SSPA y el Plan Integral de Diabetes.",
               video:"https://cdnapi.codev8.net/vdmplayer/8fef0bd9-c420-4204-a3e9-931cce346f08",
-            },
+              pdf:"/formularios/formulario3_educacion_terapeutica.pdf" },
           ].map((f,i)=>(
             <div key={i} style={{ background:f.bg, border:`1.5px solid ${f.border}`, borderRadius:12, padding:"12px 14px", marginBottom:10 }}>
               <div style={{ display:"flex", alignItems:"flex-start", gap:10 }}>
@@ -1234,11 +1239,13 @@ function ModuloPAI({ momento, perfil }) {
                   <div style={{ fontSize:13, fontWeight:700, color:"#0f172a", marginBottom:4 }}>{f.titulo}</div>
                   <div style={{ fontSize:12, color:"#475569", lineHeight:1.5, marginBottom:10 }}>{f.desc}</div>
                   <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-                    <a href={f.video} target="_blank" rel="noopener noreferrer" style={{ fontSize:11, fontWeight:600, color:f.color, background:"white", border:`1px solid ${f.border}`, borderRadius:7, padding:"5px 12px", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:4 }}>
+                    <a href={f.video} target="_blank" rel="noopener noreferrer"
+                      style={{ fontSize:11, fontWeight:600, color:f.color, background:"white", border:`1px solid ${f.border}`, borderRadius:7, padding:"5px 12px", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:4 }}>
                       ▶ Ver demo en video
                     </a>
-                    <a href="https://juntadeandalucia.es/sites/default/files/2023-12/Pie_diabetico_doc_apoyo_2023.pdf" target="_blank" rel="noopener noreferrer" style={{ fontSize:11, fontWeight:600, color:"#64748b", background:"white", border:"1px solid #e2e8f0", borderRadius:7, padding:"5px 12px", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:4 }}>
-                      📄 PDF de apoyo 2023
+                    <a href={f.pdf} target="_blank" rel="noopener noreferrer"
+                      style={{ fontSize:11, fontWeight:600, color:"#475569", background:"white", border:"1px solid #e2e8f0", borderRadius:7, padding:"5px 12px", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:4 }}>
+                      📋 Ver formulario
                     </a>
                   </div>
                 </div>
@@ -1317,7 +1324,7 @@ export default function App() {
             <div style={{ fontSize:14, fontWeight:800, letterSpacing:"-0.3px" }}>
               <span style={{ color:"white" }}>doncel</span><span style={{ color:"#38bdf8" }}>project</span>
             </div>
-            <div style={{ fontSize:10, color:"#94a3b8" }}>PAI Diabetes Mellitus · SSPA 2018</div>
+            <div style={{ fontSize:10, color:"#94a3b8" }}>PAI Diabetes Mellitus · Consejería de Salud</div>
           </div>
         </div>
         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
