@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && mkdir -p dist/formularios && cp -r public/formularios/* dist/formularios/ 2>/dev/null || true",
     "preview": "vite preview"
   }
 }
