@@ -1220,17 +1220,17 @@ function ModuloPAI({ momento, perfil }) {
               titulo:"Exploración y estratificación del pie de riesgo",
               desc:"Valora antecedentes, neuropatía (monofilamento + diapasón), EAP (pulsos + ITB), hábitos y exploración física. Clasifica el riesgo (bajo/moderado/alto) y establece la frecuencia de cribado.",
               video:"https://cdnapi.codev8.net/vdmplayer/c63df16c-5956-422d-b0ba-b6a175932067",
-              pdf:"/formularios/formulario1_pie_riesgo.pdf" },
+              pdf:"/assets/formularios/formulario1_pie_riesgo.pdf" },
             { num:"2", color:"#059669", bg:"#f0fdf4", border:"#86efac",
               titulo:"Conocimientos sobre autocuidados del pie: DFSQ-UMA",
               desc:"16 ítems validados (Univ. Málaga). Escala 16–80. Subescalas: autocuidado personal, cuidado podológico, calzado y medias. Recomienda intervenciones en áreas deficitarias.",
               video:"https://cdnapi.codev8.net/vdmplayer/c474c2b6-f0e7-4583-8e2e-7fa71953aff2",
-              pdf:"/formularios/formulario2_dfsq_uma.pdf" },
+              pdf:"/assets/formularios/formulario2_dfsq_uma.pdf" },
             { num:"3", color:"#7c3aed", bg:"#faf5ff", border:"#c4b5fd",
               titulo:"Registro de educación terapéutica para la prevención del pie diabético",
               desc:"Documenta tipo de sesión, contenidos por bloques, objetivos NOC y intervenciones NIC. Vinculado a la Estrategia de Cuidados SSPA y el Plan Integral de Diabetes.",
               video:"https://cdnapi.codev8.net/vdmplayer/8fef0bd9-c420-4204-a3e9-931cce346f08",
-              pdf:"/formularios/formulario3_educacion_terapeutica.pdf" },
+              pdf:"/assets/formularios/formulario3_educacion_terapeutica.pdf" },
           ].map((f,i)=>(
             <div key={i} style={{ background:f.bg, border:`1.5px solid ${f.border}`, borderRadius:12, padding:"12px 14px", marginBottom:10 }}>
               <div style={{ display:"flex", alignItems:"flex-start", gap:10 }}>
